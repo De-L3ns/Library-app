@@ -10,16 +10,27 @@ function Book(title, author, pages, isRead) {
     this.pages = pages;
     this.isRead = isRead;
 
+    this.markRead = function() {
+
+        this.isRead = '<i class="fa fa-check-square" style="font-size:36px; color:rgb(79, 79, 235)"></i>'
+        refresh();
+        
+    }
+
     if (this.isRead) {
 
-        this.isRead = "READ";
+        this.isRead = '<i class="fa fa-check-square" style="font-size:36px; color:rgb(79, 79, 235)"></i>'
 
     } else {
 
-        this.isRead = "NOT READ";
+        this.isRead = '<i class="fa fa-square" style="font-size:36px; color:rgb(79, 79, 235)"></i>'
     }
 
+    
+
 }
+
+
 
 // Functions
 
@@ -32,6 +43,9 @@ function addBookToLibrary() {
     let author = formInfo.elements[1].value;
     let pages = formInfo.elements[2].value;
     let isRead = formInfo.elements[3].checked;
+
+    formInfo.reset();
+    closeForm();
 
     // create an object and push to the array
     let book = new Book(title, author, pages, isRead);
@@ -73,6 +87,12 @@ function deleteBookFromLibrary(index) {
 
 }
 
+function markAsRead(index) {
+
+    myLibrary[index].markRead();
+    console.log(myLibrary[index]);
+}
+
 // re-usable functions
 
 function updateBookList(book, index) {
@@ -90,7 +110,7 @@ function updateBookList(book, index) {
     // creating a button
     
     pushDeleteButtonToDiv("BUTTON", "Delete", bookCard, "delete-button", index);
-    pushButtonToDiv("BUTTON", "Mark Read", bookCard, "read-button", index);
+    pushReadButtonToDiv("BUTTON", "Mark Read", bookCard, "read-button", index);
     
     
     
@@ -143,8 +163,10 @@ function closeForm() {
 let libraryBody = document.getElementById("library-body");
 
 function refresh() {
-    console.log("refresh here");
-    console.log(myLibrary);
+    currentBookCards = document.querySelectorAll(".book-card");
+    currentBookCards.forEach(card => {
+        card.remove();
+    })
     myLibrary.forEach(function (book, index) {
 
 
